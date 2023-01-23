@@ -1,0 +1,70 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "open Sans" sans-serif;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #060a1f;
+}
+.clock h2{
+    color: white;
+    text-transform: capitalize;
+    letter-spacing: 0.4em;
+    margin: 10px 0;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    position: relative;
+    /* font-size: 0.8em; */
+}
+.time{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+.time div{
+    position: relative;
+    -webkit-box-reflect: below 1px linear-gradient(transparent ,#000);
+}
+.time div span{
+    position: relative;
+    width: 140px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: #2196f3;
+    font-weight: 500;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+.time div span:first-child {
+    font-size: 4em;
+    letter-spacing: 0.1em;
+    height: 100px;
+}
+.time div span:nth-child(2) {
+    text-transform: uppercase;
+    height: 40px;
+    letter-spacing: .3rem;
+    background-color: #127fd6;
+}
+.time #AMPM{
+    background-color: #127fd6;
+    position: absolute;
+    bottom: 0;
+    height: 40px;
+    font-size: 2em;
+}
+.finish span:first-child{
+    background-color: #ff0062;
+}
+.finish span:nth-child(2){
+    background-color: #ec0062;
+}
