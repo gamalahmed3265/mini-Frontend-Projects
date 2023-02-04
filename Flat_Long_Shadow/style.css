@@ -1,0 +1,23 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #00fff3;
+    min-height: 100vh;
+}
+#text{
+    text-transform: uppercase;
+    position: relative;
+    color: white;
+    font-size: 10em;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+    outline: none;
+    text-shadow: 1px 1px 0 #01ded3;
+}
