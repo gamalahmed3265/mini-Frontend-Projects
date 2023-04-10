@@ -9,7 +9,7 @@ let buttons=document.querySelector(".buttons"),
 for (let i = 0; i < span.length; i++) {
     span[i].addEventListener("click",function(){
       if(span[i].innerHTML=="="){
-        value.innerHTML=eval(value.innerHtml);
+        value.innerHTML=eval(value.innerHTML);
       }else{
         if(span[i].innerHTML=="Clear"){
           value.innerHTML="";
