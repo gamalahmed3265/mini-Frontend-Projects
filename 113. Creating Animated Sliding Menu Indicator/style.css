@@ -1,0 +1,34 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+nav{
+  display: flex;
+  position: relative;
+}
+nav a{
+  text-decoration: none;
+  color: black;
+  margin: 0 20px;
+  position: relative;
+  font-size: 2em;
+}
+nav a:hover{
+  color: red;
+}
+nav #marker{
+  position: absolute;
+  height: 4px;
+  background: #000;
+  bottom: -8px;
+  left: 0;
+  transition: 0.5s;
+  border-radius: 4px;
+}
