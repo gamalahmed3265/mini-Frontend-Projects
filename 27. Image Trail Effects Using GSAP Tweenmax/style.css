@@ -1,0 +1,20 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+body{
+  background: #111;
+
+}
+.imgbox{
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: red;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+.imgbox img{
+  width: 100%;
+  object-fit: cover;
+}
