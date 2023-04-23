@@ -1,0 +1,148 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+section{
+  position: relative;
+  height: 100vh;
+  background: #fee648;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.contanier{
+  background: white;
+  position: relative;
+  width: 800px;
+  height: 500px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.01);
+  overflow: hidden;
+}
+.contanier .user{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+.contanier .user .imgBox{
+  position: relative;
+  height: 100%;
+  width: 50%;
+  background: #ff0;
+  transition: 0.5s;
+}
+.contanier .user .imgBox img{
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  object-fit: cover;
+}
+.contanier .user .formBox{
+  position: relative;
+  height: 100%;
+  width: 50%;
+  height: 100%;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  transition: 0.5s;
+}
+.contanier .user .formBox form h2{
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #555;
+}
+.contanier .user .formBox form input{
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  background: #f5f5f5;
+  border: 0;
+  outline: 0;
+  color: #333;
+  box-shadow: none;
+  margin: 8px 0;
+  font-size: 18px;
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+.contanier .user .formBox form input[name="submit"]{
+  max-width: 100px;
+  background: #677eff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  transition: 0.5s;
+}
+.contanier .user .formBox form .sigupP{
+  position: relative;
+  margin-top: 20px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #555;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+.contanier .user .formBox form .sigupP a{
+  color: #677eff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contanier .signupBox{
+  pointer-events: none;
+}
+.contanier.active .signupBox{
+  pointer-events: initial;
+}
+.contanier .signupBox .formBox{
+  left: 100%;
+}
+.contanier.active .signupBox .formBox{
+  left: 0;
+}
+.contanier .signupBox .imgBox{
+  left: -100%;
+}
+.contanier.active .signupBox .imgBox{
+  left: 0;
+}
+
+
+.contanier .siginBox .formBox{
+  left: 0;
+}
+.contanier.active .siginBox .formBox{
+  left: 100%;
+}
+.contanier .siginBox .imgBox{
+  left: 0%;
+}
+.contanier.active .siginBox .imgBox{
+  left: -100%;
+}
+@media (max-width: 991px) {
+  section .contanier{
+    max-width: 400px;
+  }
+  section .contanier .imgBox{
+    display: none;
+  }
+  section .contanier .user .formBox{
+    width: 100%;
+  }
+}
