@@ -1,4 +1,4 @@
-## This repo implements a sample webpage that displays creative ideas.
+## This repo implements a sample webpages that displays creative ideas.
 HTML, CSS, and JavaScript are the three main languages used to create websites.
 
 * **HTML** stands for HyperText Markup Language. It is the language used to create the structure of a website. HTML defines the content of a page, such as headings, paragraphs, images, and lists.
