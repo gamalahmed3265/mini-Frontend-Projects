@@ -1,0 +1,70 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.content{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #071319;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+.content.active{
+  background: #03A9F4;
+}
+ul{
+  position: relative;
+  transform: scale(1);
+  transition: .5s;
+}
+ul.active{
+  transform: scale(0);
+}
+ul li{
+  list-style: none;
+  position: relative;
+  color: white;
+  font-size: 40px;
+  margin-bottom: 20px;
+  font-weight: blod;
+  display: block;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+ul li::before{
+  content: "";
+  position: absolute;
+  background: #ffc107;
+  transform-origin: right;
+  transform: translateY(-50%) scaleX(0);
+  transition: 0.5s transform;
+}
+ul li:hover::before{
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  transform-origin: left;
+  transform: translateY(-50%) scaleX(1);
+  transition: 0.5s transform;
+}
+.btn{
+  position: fixed;
+  top: 40px;
+  right: 30px;
+  background: #03A9F4 url("assest/close.png");
+  width: 50px;
+  height: 50px;
+  outline: none;
+  border: none;
+}
+.btn.active{
+  background: red url("assest/open.png");
+}
