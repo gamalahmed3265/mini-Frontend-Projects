@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: rgb(36, 31, 31);
+        }
+        nav{
+            background-color: azure;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        nav ul{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        :is(nav li,
+        nav .title)
+        {
+            list-style: none;
+            padding: 20px;
+        }
+        :is(nav li:hover,
+        nav .title:hover)
+        {
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+        :is(nav li a,
+        nav .title a)
+        {
+            text-decoration: none;
+            font-weight:700;
+            text-transform: capitalize;
+        }
+        nav .title{
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 25px;
+        }
+        :is(.menu-icons,.close-icons){
+            display: none;
+        }
+        :is(nav li,.menu-icons,.close-icons){
+            transition:all 0.5s  ease-in-out;
+
+        }
+        @media screen and (max-width: 600px) {
+            nav{
+                padding: 0;
+                position: relative;
+                align-items: flex-start;
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+            nav .title{
+                width: 100%;
+                padding: 10px 20px;
+            }
+            nav ul{
+                display: none;
+                width: 100%;
+                flex-direction: column;
+            } 
+            nav ul li{
+                padding: 10px 20px;
+            }
+            .menu-icons{
+                display: block;
+            }
+            :is(.menu-icons,.close-icons){
+                position: absolute;
+                right: 20px;
+                top: 10px;
+                cursor: pointer;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <nav>
+        <h3 class="title"><a href="">Gamal</a></h3>
+        <ul>
+            <li><a href="" style="--i:1">Home</a></li>
+            <li><a href="" style="--i:2">about</a></li>
+            <li><a href="" style="--i:3">best</a></li>
+            <li><a href="" style="--i:4">parts</a></li>
+            <li><a href="" style="--i:5">contect</a></li>
+        </ul>
+        <span class="menu-icons material-symbols-outlined">
+            menu
+            </span>
+        
+        <span  class="close-icons material-symbols-outlined">
+            close
+            </span>
+    </nav>
+
+    <script>
+        let menuIcons=document.querySelector(".menu-icons");
+        let closeIcons=document.querySelector(".close-icons");
+        let title=document.querySelector(".title");
+        let navUl=document.querySelector("nav ul");
+
+        function showNavList(e){
+            navUl.style.display="block";
+            closeIcons.style.display="block";
+            title.style.borderBottom="1px solid rgb(0, 45, 34)"
+
+            menuIcons.style.display="none";
+
+        }
+        function hideNavList(e){
+            navUl.style.display="none";
+            closeIcons.style.display="none";
+            menuIcons.style.display="block";
+        }
+        menuIcons.addEventListener("click",showNavList)
+        closeIcons.addEventListener("click",hideNavList)
+    </script>
+</body>
+</html>
