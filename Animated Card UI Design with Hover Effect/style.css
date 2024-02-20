@@ -1,0 +1,117 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+:root{
+  --cls:#222;
+}
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--cls);
+}
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  position: relative;
+}
+.card{
+  width: 320px;
+  height: 250px;
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  transition: .5s;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+.card:hover{
+  height: 350px;
+}
+.card .imgbox{
+  position: absolute;
+  background: red;
+  inset: 20px 20px 50px 20px;
+  border-radius: 20px;
+  transition: 0.5s;
+  z-index: 1000;
+}
+.card:hover .imgbox{
+  inset: -50px 60px 250px 60px;
+  box-shadow: 0 0 0 10px var(--cls);
+}
+.card .imgbox::before,
+.card .imgbox::after{
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  transform: translateY(-100px);
+  opacity: 0;
+  transition: 0.5;
+  pointer-events: none;
+}
+
+.card .imgbox::before{
+  left: -30px;
+  border-top-right-radius: 100%;
+  box-shadow: 5px -5px 0 4px var(--cls);
+}
+.card .imgbox::after{
+  right: -30px;
+  border-top-left-radius: 100%;
+  box-shadow: -5px -5px 0 4px var(--cls);
+}
+.card:hover .imgbox::before,
+.card:hover .imgbox::after{
+  transform: translateY(50px);
+  opacity: 1;
+  background: white;
+}
+.card img{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border-radius: 15px;
+  object-fit: cover;
+}
+.card h2{
+  font-weight: 600;
+  position: absolute;
+  color: #333;
+  transition: 0.5;
+  bottom: 8px;
+}
+.card p{
+  visibility: hidden;
+  padding: 40px;
+  transition: 0.5;
+  opacity: 0;
+  text-align: center;
+  position: relative;
+  transform: translateY(-50px);
+}
+.card:hover p{
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(40px);
+}
+.card:hover h2{
+  bottom: -25px;
+  padding: 5px 25px;
+  background: #65ff50;
+  border-radius: 15px;
+  box-shadow: 0 0 0 10px var(--cls);
+}
