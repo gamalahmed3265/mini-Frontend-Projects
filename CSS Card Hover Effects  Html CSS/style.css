@@ -10,7 +10,12 @@ body{
   min-height: 100vh;
   background: #000000d1;
 }
-.container{
+.container> h2{
+  color: white;
+  text-align: center;
+}
+.container .content{
+  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -22,6 +27,10 @@ body{
   position: relative;
   overflow: hidden;
   box-shadow: 0px 7px 10px rgba(0,0,0,0.5);
+  transition: 0.5s ease-in-out;
+}
+.container .box:hover{
+  transform: translateY(10px);
 }
 .container .box .info{
   height: 100%;
@@ -34,10 +43,12 @@ body{
   display: none;
   display: flex;
   opacity: 0;
-  transition: 0.5s ease-in-out;
+  transition: 0.6s ease-in-out;
 }
+
 .container .box:hover .info{
   opacity: 1;
+  transform: translateY(-10px);
 }
 .container .box:hover .info{
   background-image: linear-gradient(to bottom, transparent,yellow);
