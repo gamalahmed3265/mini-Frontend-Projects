@@ -2,4 +2,4 @@
 
 
 ## Demo
-![](/assest/img/output.gif)
+<img src="assest/img/output.gif" width="200" />
