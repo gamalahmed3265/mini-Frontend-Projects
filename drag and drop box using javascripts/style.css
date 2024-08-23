@@ -1,0 +1,39 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #243128;
+}
+.container{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #2f4036;
+  gap: 30px;
+  border-radius: 20px;
+  box-shadow: 0 15px 55px rgba(0, 0, 0, 0.15);
+}
+.box{
+  position: relative;
+  width: 50px;
+  height: 50px;
+  background: #213127;
+  border-radius: 10px;
+}
+.glow{
+  background: #00fb70;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  filter: drop-shadow(0 0 15px #00fb70) drop-shadow(0 0 45px #00fb70);
+}
