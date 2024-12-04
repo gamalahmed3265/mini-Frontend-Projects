@@ -48,4 +48,5 @@ body{
     transform-origin: top right;
     perspective-origin: 300px;
     backface-visibility: hidden;
+    user-select: none;
 }
