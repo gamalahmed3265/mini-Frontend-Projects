@@ -1,0 +1,51 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: dimgray;
+    display: grid;
+    place-items: center;
+    height: 100vh;
+}
+.container{
+    perspective: 700px;
+}
+.box{
+    height: 300px;
+    width: 200px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+
+}
+.box:hover{
+    transform: rotateY(-180deg);
+}
+.box .front{
+    background-color: darkred;
+}
+.box .back{
+    background-color:green;
+    transform: rotateY(180deg);
+}
+.box .face{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    text-transform: capitalize;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transform-origin: top right;
+    perspective-origin: 300px;
+    backface-visibility: hidden;
+}
