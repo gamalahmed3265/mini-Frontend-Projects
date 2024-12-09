@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content=">حساب الزمن بين تارخين مثل الثوانى - الدقائق - الايام - السنين">
+  <title>حساب الزمن بين تارخين</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      height: 100vh;
+      background-image: linear-gradient(45deg, #8500ff, #5acaff);
+      align-items: center;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      width: 100%;
+      height: 100%;
+      background: #151729 url("assest/p404.png");
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .container h4 {
+      background: white;
+      font-size: 1.5em;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: #111;
+      margin: 0 auto;
+      font-weight: 300;
+      width: fit-content;
+    }
+
+    .container input {
+      text-decoration: none;
+      background: #ff0562;
+      padding: 10px 20px;
+      border-radius: 25px;
+      color: white;
+      margin: 0 auto;
+      width: fit-content;
+      border: 4px solid #d00d56;
+    }
+
+    input::placeholder {
+      color: aliceblue;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <input type="date" placeholder="JUN 1 2000" pattern=/\w{1,3}\s\d{1,2}\s\d{1,4}/ig onfocus="" />
+    <h1 class="head">ادخل تاريخ ميلادك </h1>
+  </div>
+  <script>
+    let input = document.querySelector("input"),
+        body = document.querySelector("body"),
+        head = document.querySelector(".head");
+        hSec = document.createElement("h4"),
+        pSec = document.createElement("p"),
+        hMin = document.createElement("h4"),
+        pMin = document.createElement("p"),
+        hHor = document.createElement("h4"),
+        pHor = document.createElement("p"),
+        hDay = document.createElement("h4"),
+        pDay = document.createElement("p"),
+        hYear = document.createElement("h4"),
+        pYear = document.createElement("p"),
+        container = document.querySelector(".container");
+
+    window.addEventListener("load", (ele) => {
+      input.focus();
+      input.addEventListener("blur", (e) => {
+
+        if (e.target.value) {
+
+          
+          let nowDate = new Date(),
+          targetDate = new Date(e.target.value);
+          head.innerHTML = "عمرك الان"
+          hSec.innerHTML = ((nowDate - targetDate) / 1000).toFixed();
+          pSec.innerHTML = "ثانية من هذا التاريخ";
+          hMin.innerHTML = ((nowDate - targetDate) / 1000 / 60).toFixed();
+          pMin.innerHTML = "دقيقة من هذا التاريخ";
+          hHor.innerHTML = ((nowDate - targetDate) / 1000 / 60 / 60).toFixed();
+          pHor.innerHTML = "ساعة من هذا التاريخ";
+          hDay.innerHTML = ((nowDate - targetDate) / 1000 / 60 / 60 / 24).toFixed();
+          pDay.innerHTML = "يوم من هذا التاريخ";
+          hYear.innerHTML = calculateYearsBetweenDates(targetDate, nowDate);
+          pYear.innerHTML = "سنة من هذا التاريخ";
+          container.appendChild(hSec);
+          container.appendChild(pSec);
+          container.appendChild(hMin);
+          container.appendChild(pMin);
+          container.appendChild(hHor);
+          container.appendChild(pHor);
+          container.appendChild(hDay);
+          container.appendChild(pDay);
+          container.appendChild(hYear);
+          container.appendChild(pYear);
+          body.style.height="150vh";
+        }
+      });
+
+    })
+
+
+
+
+    function calculateYearsBetweenDates(start, end) {
+      // التحقق من أن التواريخ صالحة
+      if (isNaN(start) || isNaN(end)) {
+        return "تأكد من إدخال تواريخ صحيحة.";
+      }
+
+      // حساب الفارق بالسنين
+      let yearsDifference = end.getFullYear() - start.getFullYear();
+
+      // التحقق من أن الشهور والأيام تؤثر في عدد السنين
+      if (
+        end.getMonth() < start.getMonth() ||
+        (end.getMonth() === start.getMonth() && end.getDate() < start.getDate())
+      ) {
+        yearsDifference--;
+      }
+
+      return yearsDifference;
+    }
+
+
+  </script>
+</body>
+
+</html>
