@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --main-color: #21130d;
+            --main-color-alt: #1d100a;
+        }
+
+        body {
+            display: grid;
+            place-items: center;
+            height: 100vh;
+            background-color: var(--main-color);
+        }
+
+        .box {
+            width: 300px;
+            height: 400px;
+            position: relative;
+            background-color: var(--main-color-alt);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            overflow: hidden;
+        }
+
+        .box .box-img {
+            height: 60%;
+            overflow: hidden;
+            transition: transform 1s ease-in-out;
+        }
+
+        .box:hover .box-img {
+            transform: translateY(-25px);
+        }
+
+        .box .box-img img {
+            width: 100%;
+            height: 100%;
+            transform: rotateY(180deg) skewY(15deg);
+        }
+
+        .box .title {
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            text-transform: capitalize;
+            transition: transform 1s ease-in-out;
+        }
+
+        .box:hover .title {
+            transform: translateY(-25px);
+        }
+
+        .box .info {
+            transition: all 1s ease-in-out;
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+            align-items: center;
+            transform: translateY(100%);
+        }
+
+        .box:hover .info {
+            transform: translateY(0px);
+        }
+
+        .box .size,
+        .box .color {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .box .size>span,
+        .box .color>span {
+            text-transform: uppercase;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .box .size>span:not(:first-of-type),
+        .box .color>span:not(:first-of-type) {
+            background-color: white;
+            padding: 5px;
+            color: var(--main-color-alt);
+            border-radius: 5px;
+            transition: all 1s ease-in-out;
+            cursor: pointer;
+            user-select: none;
+            width: 30px;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .box .color>span:not(:first-of-type) {
+            border-radius: 50%;
+            height: 20px;
+            width: 20px;
+        }
+
+        .box .color>span:nth-of-type(2) {
+            background-color: skyblue;
+        }
+
+        .box .color>span:nth-of-type(3) {
+            background-color: brown;
+        }
+
+        .box .color>span:nth-of-type(4) {
+            background-color: greenyellow;
+        }
+
+        .box .size>span:not(:first-of-type):hover,
+        .box .color>span:not(:first-of-type):hover {
+            background-color: greenyellow;
+        }
+
+        .info .btn {
+            background-color: white;
+            text-transform: capitalize;
+            color: var(--main-color-alt);
+            padding: 10px 20px;
+            text-align: center;
+            user-select: none;
+            cursor: pointer;
+            border-radius: 5px;
+            width: fit-content;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .box::before {
+            content: "";
+            position: absolute;
+            right: -25%;
+            top: -25%;
+            border-color: greenyellow;
+            border-style: solid;
+            border-top-width: 150px;
+            border-left-width: 150px;
+            border-bottom-width: 150px;
+            border-right-width: 150px;
+            border-radius: 50%;
+            border-top-left-radius: 50%;
+            border-top-right-radius: 50%;
+            border-bottom-left-radius: 50%;
+            border-bottom-right-radius: 50%;
+            transition: border 1s ease-in-out;
+        }
+
+        .box:hover::before {
+            border-left-width: 250px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="box-img">
+            <img src="./img/shoes.png" alt="">
+        </div>
+        <h2 class="title">Nike Shoes</h2>
+        <div class="info">
+            <div class="size">
+                <span>size: </span>
+                <span class="size-num">7</span>
+                <span class="size-num">8</span>
+                <span class="size-num">9</span>
+                <span class="size-num">10</span>
+            </div>
+            <div class="color">
+                <span>color: </span>
+                <span class="color-val"></span>
+                <span class="color-val"></span>
+                <span class="color-val"></span>
+            </div>
+            <a href="#" class="btn">buy now</a>
+        </div>
+    </div>
+    <script src="./js/app.js" type="module"></script>
+</body>
+
+</html>
