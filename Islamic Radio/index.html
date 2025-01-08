@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>مشغل صوتي إسلامي</title>
+    <style>
+      body {
+        background-color: #333; /* لون خلفية ترابي */
+        font-family: "Amiri", serif; /* خط عربي */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .audio-container {
+        background-color: #2c5a2c; /* لون أخضر إسلامي */
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        border: 2px solid #d4af37; /* لون ذهبي */
+        text-align: center;
+      }
+
+      audio {
+        width: 300px;
+        outline: none;
+      }
+
+      audio::-webkit-media-controls-panel {
+        background-color: #2c5a2c; /* لون أخضر إسلامي */
+        border-radius: 10px;
+      }
+
+      audio::-webkit-media-controls-play-button,
+      audio::-webkit-media-controls-mute-button {
+        background-color: #d4af37; /* لون ذهبي */
+        border-radius: 50%;
+      }
+
+      audio::-webkit-media-controls-current-time-display,
+      audio::-webkit-media-controls-time-remaining-display {
+        color: #f0e6d6; /* لون نص فاتح */
+      }
+
+      .audio-container::before {
+        content: "🎧";
+        font-size: 24px;
+        color: #d4af37; /* لون ذهبي */
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .audio-container::after {
+        content: "استمع بتأمل";
+        font-size: 18px;
+        color: #f0e6d6; /* لون نص فاتح */
+        display: block;
+        margin-top: 10px;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri&display=swap"
+      rel="stylesheet"
+    />
+    <!-- خط عربي -->
+  </head>
+  <body>
+    <div class="audio-container">
+      <audio controls autoplay>
+        <source
+          rel="noreferrer nofollow"
+          src="https://stream.radiojar.com/8s5u5tpdtwzuv"
+          type="audio/mp3"
+        />
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+  </body>
+</html>
