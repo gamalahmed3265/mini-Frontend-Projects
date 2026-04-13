@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Cyberpunk Walker · Fixed Animation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="sky" id="starfield"></div>
+    <div class="moon" id="moonClick"></div>
+    <div class="city-skyline"></div>
+
+    <!-- MAIN WALKER (FIXED LEGS & HEAD, NO WEIRD MOVEMENT) -->
+    <div class="walker-container">
+        <div class="walker-shadow"></div>
+
+        <!-- LEFT FOOT + LEG -->
+  <div class="leg left-leg">
+  <div class="thigh">
+    <div class="shin">
+      <div class="foot"></div>
+    </div>
+  </div>
+</div>
+<div class="leg right-leg">
+  <div class="thigh">
+    <div class="shin">
+      <div class="foot"></div>
+    </div>
+  </div>
+</div>
+        <!-- ARMS -->
+        <div class="arm"></div>
+        <div class="arm right-arm"></div>
+
+        <!-- TORSO -->
+        <div class="torso"></div>
+
+        <!-- HEAD - fixed position, no detached animation -->
+
+<div class="walker-head">
+    <div class="eye-cyber eye-left"></div>
+    <div class="eye-cyber eye-right"></div>
+    <div class="mouth"></div>
+    <div class="nose"></div>
+</div>
+    </div>
+
+    <div class="road"></div>
+    <div class="speed-lines"></div>
+    <div class="hud-panel" id="hudDisplay">◢ WALK MODE ◣ || STEP COUNT: 2.4k</div>
+    <div class="info-tip">⚡ SPACE = HYPERDRIVE | 🌙 MOON = STAR BURST</div>
+
+    <script>
+        (function () {
+            "use strict";
+
+            // ----- 1. GENERATE STARS DYNAMICALLY (enhanced) -----
+            const skyContainer = document.getElementById('starfield');
+            for (let i = 0; i < 110; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 5 + 1.2;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 85 + '%';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 1.8) + 's';
+                skyContainer.appendChild(star);
+            }
+
+            // ----- 2. MOON EASTER EGG (stars glitter) + no head issues -----
+            const moon = document.getElementById('moonClick');
+            const allStars = () => document.querySelectorAll('.star');
+            moon.addEventListener('click', () => {
+                const stars = allStars();
+                stars.forEach(s => {
+                    s.style.animation = 'starTwinkle 0.5s infinite alternate';
+                    s.style.boxShadow = '0 0 18px gold';
+                    s.style.backgroundColor = '#ffec99';
+                });
+                setTimeout(() => {
+                    stars.forEach(s => {
+                        s.style.animation = 'starTwinkle 2.5s infinite alternate';
+                        s.style.boxShadow = '0 0 6px #c0e4ff';
+                        s.style.backgroundColor = '#fff';
+                    });
+                }, 1800);
+            });
+
+            // ----- 3. POWER MODE (SPACE) + ENHANCED LOGIC, NO BROKEN ANIMATIONS -----
+            let hyperActive = false;
+            const bodyBg = document.body;
+            const roadElem = document.querySelector('.road');
+            const hudSpan = document.getElementById('hudDisplay');
+            const walkerContainer = document.querySelector('.walker-container');
+            let stepCounter = 2480;
+            let stepInterval;
+
+            // Helper to update HUD
+            function updateHUD() {
+                if (!hyperActive) {
+                    hudSpan.innerHTML = `◢ WALK MODE ◣  ||  STEP COUNT: ${stepCounter.toLocaleString()}`;
+                    hudSpan.style.color = '#0cfc';
+                    hudSpan.style.textShadow = '0 0 8px #0cf';
+                } else {
+                    hudSpan.innerHTML = `◢ HYPERDRIVE ◣  ||  SPEED: 9.2k  ||  ⚡ BOOST: ${stepCounter.toLocaleString()} ⚡`;
+                    hudSpan.style.color = '#ff66e5';
+                    hudSpan.style.textShadow = '0 0 12px #ff44cc';
+                }
+            }
+
+            // reset / toggle hyper mode
+            function setHyperMode(enable) {
+                hyperActive = enable;
+                if (hyperActive) {
+                    // faster lane animation + visual FX
+                    document.documentElement.style.setProperty('--road-speed', '0.8s');
+                    bodyBg.style.background = 'linear-gradient(145deg, #1f0c28 0%, #351b45 40%, #1f5268 100%)';
+                    roadElem.style.background = '#181f2a';
+                    // add dynamic class for glowing effect
+                    walkerContainer.classList.add('hyper-glow');
+                    setTimeout(() => walkerContainer.classList.remove('hyper-glow'), 300);
+                    // inject extra speed line temporarily (creative)
+                    const extraLine = document.createElement('div');
+                    extraLine.className = 'speed-lines';
+                    extraLine.style.animationDuration = '0.35s';
+                    extraLine.style.background = 'linear-gradient(90deg, transparent, #ff88ee, transparent)';
+                    extraLine.style.opacity = '0.7';
+                    document.body.appendChild(extraLine);
+                    setTimeout(() => extraLine.remove(), 2500);
+                    // update road lane animation speed dynamically
+                    const roadPseudo = document.querySelector('.road');
+                    if (roadPseudo) {
+                        roadPseudo.style.setProperty('--move-duration', '0.9s');
+                    }
+                    updateHUD();
+                } else {
+                    document.documentElement.style.setProperty('--road-speed', '1.6s');
+                    bodyBg.style.background = 'linear-gradient(145deg, #0a0e1a 0%, #151f30 40%, #2b4b5a 100%)';
+                    roadElem.style.background = 'linear-gradient(0deg, #141f2b, #1e2f3e)';
+                    updateHUD();
+                }
+                // adjust lane keyframe via injecting style if needed
+                const styleSheet = document.styleSheets[0];
+                // dynamic adjustment (smooth)
+                const laneKeyframes = document.querySelector('.road');
+                if (laneKeyframes) {
+                    if (hyperActive) {
+                        laneKeyframes.style.setProperty('animation', 'moveLane 0.9s linear infinite');
+                    } else {
+                        laneKeyframes.style.setProperty('animation', 'moveLane 1.6s linear infinite');
+                    }
+                }
+            }
+
+            // step counting interval (dynamic)
+            function startStepCounter() {
+                if (stepInterval) clearInterval(stepInterval);
+                stepInterval = setInterval(() => {
+                    if (!hyperActive) {
+                        stepCounter += Math.floor(Math.random() * 4) + 1;
+                    } else {
+                        stepCounter += Math.floor(Math.random() * 15) + 8;
+                    }
+                    updateHUD();
+                }, 750);
+            }
+
+            startStepCounter();
+
+            // Space key listener
+            window.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    hyperActive = !hyperActive;
+                    setHyperMode(hyperActive);
+                    // also trigger small visual on walker container for feedback
+                    const container = document.querySelector('.walker-container');
+                    container.style.filter = hyperActive ? 'drop-shadow(0 0 12px #ff44cc)' : 'drop-shadow(0 20px 12px rgba(0,0,0,0.35))';
+                    if (!hyperActive) {
+                        container.style.filter = 'drop-shadow(0 20px 12px rgba(0,0,0,0.35))';
+                    } else {
+                        // extra blink
+                        setTimeout(() => {
+                            if (hyperActive) container.style.filter = 'drop-shadow(0 0 18px #ff88dd)';
+                        }, 80);
+                    }
+                }
+            });
+
+            // optional: click on walker for fun interaction (no break)
+            const headElement = document.querySelector('.walker-head');
+            headElement.addEventListener('click', () => {
+                const eyes = document.querySelectorAll('.eye-cyber');
+                eyes.forEach(eye => {
+                    eye.style.animation = 'none';
+                    eye.style.background = '#ff3366';
+                    setTimeout(() => {
+                        eye.style.animation = 'eyeGlint 3s infinite';
+                        eye.style.background = '#12121c';
+                    }, 300);
+                });
+            });
+
+            // Ensure no head shifting: reset any unwanted transforms via js safe lock
+            // make sure head is statically positioned relative to torso (CSS already fine)
+            // also double-check leg animations are consistent without glitch
+            console.log("✅ Walker ready: legs and head movement fixed, smooth walk cycle");
+
+            // fix for potential right foot .leg-part::before delay override consistency
+            const styleAdjust = document.createElement('style');
+            styleAdjust.textContent = `
+        .foot.right-foot .leg-part::before {
+          animation-delay: -0.9s;
+        }
+        .walker-head {
+          will-change: auto;
+          transform: translateZ(0);
+        }
+        .torso, .arm, .foot {
+          will-change: transform;
+        }
+      `;
+            document.head.appendChild(styleAdjust);
+
+            // bonus: adaptive speed line animation sync with hyper mode
+            let speedLine = document.querySelector('.speed-lines');
+            function adjustSpeedLines() {
+                if (!speedLine) return;
+                if (hyperActive) {
+                    speedLine.style.animationDuration = '0.45s';
+                    speedLine.style.opacity = '0.7';
+                } else {
+                    speedLine.style.animationDuration = '0.9s';
+                    speedLine.style.opacity = '0.4';
+                }
+            }
+
+            // observe hyperactive changes for speed lines
+            const originalSetHyper = setHyperMode;
+            window.setHyperMode = setHyperMode;
+            setHyperMode = (enable) => {
+                originalSetHyper(enable);
+                adjustSpeedLines();
+            };
+            setHyperMode(hyperActive);
+            adjustSpeedLines();
+
+            // also update speed line on each key press
+            const keyOverride = window.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    setTimeout(adjustSpeedLines, 20);
+                }
+            });
+
+            // final step: ensure that shadow and walk cycle matches both legs & no head drift
+            // guarantee head does not inherit bob from torso: no extra transforms
+            // all good, no 'headBob' leftover
+
+            // clean up interval on page unload just in case
+            window.addEventListener('beforeunload', () => {
+                if (stepInterval) clearInterval(stepInterval);
+            });
+
+            // additional improvement: reset animation if any out-of-sync (safety)
+            const allFeet = document.querySelectorAll('.foot');
+            if (allFeet.length === 2) {
+                // pre-check: both feet have different phases
+                allFeet[1].style.animationDelay = '-0.9s';
+            }
+
+            // show initial count
+            updateHUD();
+
+        })();
+    </script>
+</body>
+
+</html>

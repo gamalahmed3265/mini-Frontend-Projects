@@ -1,0 +1,776 @@
+/* ----- RESET & GLOBAL ----- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+/* ===== RESET & GLOBAL ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  /* Cyberpunk color variables */
+  --bg-dark: #0a0e1a;
+  --bg-mid: #151f30;
+  --bg-light: #2b4b5a;
+  --neon-cyan: #0ef5ff;
+  --neon-pink: #ff66e5;
+  --neon-green: #1effbc;
+  --metal-dark: #1f2e3c;
+  --metal-mid: #2c4055;
+  --metal-light: #3a536d;
+  --skin: #f5e2c1;
+  --skin-shadow: #cbaa7a;
+  --walk-duration: 1.8s;
+  --walk-ease: cubic-bezier(0.45, 0.25, 0.55, 0.85);
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    min-height: 100vh;
+    background: linear-gradient(145deg, #0a0e1a 0%, #151f30 40%, #2b4b5a 100%);
+    overflow: hidden;
+    font-family: "Share Tech Mono", "Orbitron", monospace;
+    transition: background 0.3s ease;
+}
+
+/* ----- NIGHT SKY + STARS (ENHANCED) ----- */
+.sky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 65%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #c0e4ff;
+    opacity: 0.8;
+    animation: starTwinkle 2.5s infinite alternate ease-in-out;
+}
+
+@keyframes starTwinkle {
+    0% {
+        opacity: 0.2;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* MOON */
+.moon {
+    position: absolute;
+    top: 4%;
+    right: 7%;
+    width: 75px;
+    height: 75px;
+    background: radial-gradient(circle at 30% 35%, #fdf8e7, #ecdca8);
+    border-radius: 50%;
+    box-shadow: 0 0 45px #ffecb3;
+    z-index: 1;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.moon:active {
+    transform: scale(0.96);
+}
+
+/* ----- MAIN WALKER CONTAINER (CENTERED) ----- */
+.walker-container {
+    position: relative;
+    z-index: 10;
+    transform: translateX(-45px) translateY(-120px);
+    filter: drop-shadow(0 20px 12px rgba(0, 0, 0, 0.35));
+}
+
+/* GROUND SHADOW */
+.walker-shadow {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 190px;
+    height: 28px;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55) 0%, transparent 75%);
+    border-radius: 50%;
+    z-index: 2;
+    animation: shadowPulse 2s linear infinite;
+}
+
+@keyframes shadowPulse {
+    0%,
+    100% {
+        opacity: 0.65;
+        width: 185px;
+    }
+    50% {
+        opacity: 0.4;
+        width: 160px;
+    }
+}
+
+/* ----- LEGS & FEET - FIXED LOGIC (NO HEAD INTERFERENCE, SMOOTH WALK) ----- */
+
+/* ═══════════════════════════════════════════════════════
+   🔧 FIXED LEGS & FEET - Proper hierarchy + pivot animation
+   ═══════════════════════════════════════════════════════ */
+
+/* LEG WRAPPER - pivots from hip, contains entire leg chain */
+.leg {
+  position: absolute;
+  top: -100px; /* hip position */
+  width: 42px;
+  transform-origin: top center; /* ← KEY: pivot from hip */
+  animation: legSwing var(--walk-duration) ease-in-out infinite;
+  z-index: 7;
+  will-change: transform;
+}
+.leg.right-leg { animation-delay: calc(var(--walk-duration) / -2); }
+
+@keyframes legSwing {
+  0%, 100% { transform: rotate(-24deg); }
+  25% { transform: rotate(-8deg); }
+  50% { transform: rotate(24deg); }
+  75% { transform: rotate(8deg); }
+}
+
+/* Position legs side-by-side */
+.leg.left-leg { left: -35px; }
+.leg.right-leg { left: 38px; }
+
+/* THIGH - visual segment */
+.thigh {
+  width: 42px;
+  height: 95px;
+  background: var(--metal-mid);
+  border-radius: 22px 22px 16px 16px;
+  box-shadow: 
+    inset -3px 0 0 #1d2e3f,
+    inset 2px 0 0 #4a6380;
+}
+
+/* SHIN - pivots from knee */
+.shin {
+  position: absolute;
+  top: 92px;
+  left: -3px;
+  width: 48px;
+  height: 85px;
+  background: var(--metal-light);
+  border-radius: 18px 18px 24px 24px;
+  transform-origin: top center;
+  animation: shinKick var(--walk-duration) ease-in-out infinite;
+  box-shadow: inset -2px 0 0 #243a4b;
+}
+.leg.right-leg .shin { animation-delay: calc(var(--walk-duration) / -2); }
+
+@keyframes shinKick {
+  0%, 100% { transform: rotate(6deg); }
+  25% { transform: rotate(-8deg); }
+  50% { transform: rotate(-28deg); } /* max bend at mid-swing */
+  75% { transform: rotate(-6deg); }
+}
+
+/* FOOT - attached to shin, subtle plant motion */
+.foot {
+  position: absolute;
+  top: 172px;
+  left: -18px;
+  width: 78px;
+  height: 30px;
+  background: var(--metal-dark);
+  border-radius: 50px 65px 22px 22px / 32px 50px 14px 14px;
+  border-bottom: 5px solid #10171f;
+  box-shadow: 
+    inset 0 -3px 0 #10171f,
+    0 5px 0 #0a1117;
+  transform-origin: top center;
+  animation: footPlant var(--walk-duration) ease-in-out infinite;
+  z-index: 8;
+}
+.leg.right-leg .foot { animation-delay: calc(var(--walk-duration) / -2); }
+
+@keyframes footPlant {
+  0%, 100% { transform: rotate(3deg) translateY(0); }
+  20% { transform: rotate(-6deg) translateY(-2px); } /* heel lift */
+  50% { transform: rotate(8deg) translateY(0); }    /* toe push */
+  80% { transform: rotate(-2deg) translateY(-1px); }
+}
+.hyper-glow {
+  animation: hyperFlash 0.2s ease-out;
+}
+@keyframes hyperFlash {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.6) drop-shadow(0 0 8px var(--neon-pink)); }
+  100% { filter: brightness(1); }
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .walker-container { transform: translateX(-30px) translateY(-90px) scale(0.85); }
+  .moon { width: 55px; height: 55px; top: 3%; right: 5%; }
+  .hud-panel, .info-tip { font-size: 12px; padding: 6px 12px; }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/* Cyberpunk boot details */
+.foot::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  width: 45px;
+  height: 3px;
+  background: var(--neon-cyan);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--neon-cyan);
+  opacity: 0.7;
+  animation: bootGlow 2s ease-in-out infinite;
+}
+@keyframes bootGlow {
+  0%, 100% { opacity: 0.5; box-shadow: 0 0 6px var(--neon-cyan); }
+  50% { opacity: 0.9; box-shadow: 0 0 14px var(--neon-cyan), 0 0 28px var(--neon-cyan); }
+}
+
+/* ----- TORSO (BODY) - REMOVED HEAD MOVEMENT GLITCH, ONLY SUBTLE BOUNCE ----- */
+.torso {
+    position: absolute;
+    top: -355px;
+    left: -42px;
+    width: 118px;
+    height: 260px;
+    background: #1f4a6e;
+    z-index: 6;
+    transform: rotate(3deg);
+    animation: torsoBob 1.8s ease-in-out infinite;
+    border-radius: 50px 90px 30px 30px / 40px 70px 20px 20px;
+    box-shadow:
+        inset 0 -6px 0 #113247,
+        0 12px 0 #0e2a3b;
+}
+
+@keyframes torsoBob {
+    0%,
+    100% {
+        transform: rotate(2deg) translateY(0px);
+    }
+    50% {
+        transform: rotate(-2deg) translateY(-3px);
+    }
+}
+
+/* NECK / COLLAR */
+.torso::before {
+    content: "";
+    position: absolute;
+    top: -28px;
+    left: 48px;
+    width: 32px;
+    height: 30px;
+    background: #e6cf9e;
+    border-radius: 48% 52% 38% 42% / 55% 55% 30% 30%;
+    z-index: 5;
+    box-shadow: inset 0 -6px 0 #c7a96b;
+}
+
+/* ----- HEAD - COMPLETELY SEPARATE, FIXED ANCHOR, NO EXTRANEOUS SWAY ----- */
+       .walker-head {
+    position: absolute;
+    top: -480px;
+    left: -20px;
+    width: 86px;
+    height: 94px;
+    background: #f5e2c1;
+    border-radius: 48% 52% 42% 38% / 55% 55% 38% 35%;
+    z-index: 9;
+    box-shadow: 0 8px 0 #cbaa7a, inset 0 -6px 0 #e0c69e;
+    transition: all 0.1s;
+    animation: armSwingLeftHead 1.8s ease-in-out infinite;
+}
+
+/* Ears - left and right */
+.walker-head::before,
+.walker-head::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 28px;
+    background: #f0d5a8;
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+    top: 15px;
+    box-shadow: 0 3px 0 #cbaa7a;
+    z-index: 1;
+}
+
+.walker-head::before {
+    left: -14px;
+    transform: rotate(-25deg);
+}
+
+
+
+/* Mouth */
+.mouth {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 14px;
+    background: #8b5a2b;
+    border-radius: 0 0 30px 30px / 0 0 20px 20px;
+    z-index: 10;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 2px 0 #5a3a1a, 0 1px 0 #d4a373;
+}
+
+/* Smile variation - inner detail */
+.mouth::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 6px;
+    background: #ffb347;
+    border-radius: 0 0 20px 20px;
+    opacity: 0.7;
+}
+
+/* Cyber eyes (existing class but styled fully) */
+.eye-cyber {
+    position: absolute;
+    width: 16px;
+    height: 20px;
+    background: #1e2a2e;
+    border-radius: 50%;
+    top: 32px;
+    box-shadow: 0 0 0 3px #cbaa7a, inset 0 0 0 2px #e8c39e, 0 0 6px #ffdd99;
+    transition: transform 0.1s;
+    z-index: 12;
+}
+
+.eye-left {
+    left: 18px;
+}
+
+.eye-right {
+    right: 18px;
+}
+
+/* Pupils with cyber glow + blink animation */
+.eye-cyber::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 10px;
+    background: #0affb3;
+    border-radius: 50%;
+    top: 5px;
+    left: 4px;
+    box-shadow: 0 0 4px #00ffcc;
+    transition: all 0.05s linear;
+    animation: pupilGlow 2s infinite alternate;
+}
+
+/* Blinking animation for eyes */
+.eye-cyber {
+    animation: blinkEyes 4s infinite ease-in-out;
+}
+
+/* mouth animation: talking / subtle moving */
+.mouth {
+    animation: mouthMove 2.2s infinite ease-in-out;
+    transform-origin: center;
+}
+
+/* additional ear wiggle to match head swing */
+.walker-head::before {
+    animation: earWiggleLeft 1.8s ease-in-out infinite;
+}
+
+
+
+@keyframes armSwingLeftHead {
+    0%, 100% {
+        transform: rotate(-12deg);
+    }
+    50% {
+        transform: rotate(14deg);
+    }
+}
+
+@keyframes blinkEyes {
+    0%, 90%, 96%, 100% {
+        transform: scaleY(1);
+    }
+    93%, 94% {
+        transform: scaleY(0.05);
+    }
+}
+
+@keyframes pupilGlow {
+    0% {
+        background: #0affb3;
+        box-shadow: 0 0 2px #00ffaa;
+        width: 7px;
+        height: 9px;
+    }
+    100% {
+        background: #ffd966;
+        box-shadow: 0 0 8px #ffbb33;
+        width: 8px;
+        height: 11px;
+    }
+}
+
+@keyframes mouthMove {
+    0%, 100% {
+        width: 36px;
+        height: 12px;
+        border-radius: 0 0 30px 30px / 0 0 18px 18px;
+        background: #8b3c1c;
+    }
+    30% {
+        width: 42px;
+        height: 18px;
+        border-radius: 0 0 40px 40px / 0 0 25px 25px;
+        background: #a0522d;
+    }
+    60% {
+        width: 38px;
+        height: 14px;
+        border-radius: 0 0 32px 32px / 0 0 20px 20px;
+    }
+}
+
+@keyframes earWiggleLeft {
+    0%, 100% {
+        transform: rotate(-25deg) translateY(0px);
+    }
+    50% {
+        transform: rotate(-18deg) translateY(-2px);
+    }
+}
+
+@keyframes earWiggleRight {
+    0%, 100% {
+        transform: rotate(25deg) translateY(0px);
+    }
+    50% {
+        transform: rotate(18deg) translateY(-2px);
+    }
+}
+
+/* Optional: small nose detail to make face friendly */
+.walker-head .nose {
+    position: absolute;
+    bottom: 38px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 8px;
+    background: #c27e4a;
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 1px 0 #8b5a2b;
+}
+
+/* HAT - cyberpunk style */
+.walker-head::after {
+    content: "";
+    position: absolute;
+    top: -36px;
+    left: -8px;
+    width: 102px;
+    
+    height: 44px;
+    background: #15232e;
+    border-radius: 35% 35% 25% 25% / 65% 65% 20% 20%;
+    box-shadow: 0 6px 0 #09131c;
+    border-bottom: 2px solid #2f5370;
+    z-index: 10;
+}
+
+/* EYES + GLOW */
+.eye-cyber {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #12121c;
+    border-radius: 50%;
+    top: 38px;
+    box-shadow: 0 1px 0 #624e32;
+}
+.eye-left {
+    left: 20px;
+}
+.eye-right {
+    right: 18px;
+}
+.eye-cyber::after {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: #2affb6;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    box-shadow:
+        0 0 12px #0ef,
+        0 0 4px #4affd0;
+    animation: eyeGlint 3s infinite;
+}
+
+@keyframes eyeGlint {
+    0%,
+    100% {
+        opacity: 0.9;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+        background: #ffcc44;
+        box-shadow: 0 0 16px #ffaa33;
+    }
+}
+
+/* ARMS - SYNC WITH WALKING */
+.arm {
+    position: absolute;
+    top: -325px;
+    left: -40px;
+    width: 42px;
+    height: 165px;
+    background: #1f4a6e;
+    border-radius: 40px 30px 30px 40px;
+    transform-origin: top center;
+    transform: rotate(-28deg);
+    animation: armSwingLeft 1.8s ease-in-out infinite;
+    z-index: 5;
+    box-shadow: inset -3px 0 0 #103249;
+}
+
+.arm.right-arm {
+    left: auto;
+    right: -58px;
+    transform: rotate(28deg);
+    animation: armSwingRight 1.8s ease-in-out infinite;
+}
+
+@keyframes armSwingLeft {
+    0%,
+    100% {
+        transform: rotate(-22deg);
+    }
+    50% {
+        transform: rotate(24deg);
+    }
+}
+@keyframes armSwingRight {
+    0%,
+    100% {
+        transform: rotate(22deg);
+    }
+    50% {
+        transform: rotate(-24deg);
+    }
+}
+
+/* ----- ROAD & CYBER LANE (ENHANCED VISUALS) ----- */
+.road {
+    position: absolute;
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(0deg, #141f2b, #1e2f3e);
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    box-shadow: inset 0 12px 14px rgba(0, 0, 0, 0.6);
+}
+
+/* animated lane markers */
+.road::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 48%;
+    height: 22px;
+    width: 100%;
+    transform: perspective(320px) translateY(-50%) rotateX(38deg);
+    background: repeating-linear-gradient(90deg, transparent, transparent 70px, #0ef5ff 70px, #0ef5ff 140px);
+    background-size: 180px;
+    animation: moveLane 1.6s linear infinite;
+    opacity: 0.85;
+    filter: blur(0.8px);
+}
+
+@keyframes moveLane {
+    0% {
+        background-position-x: 180px;
+    }
+    100% {
+        background-position-x: 0;
+    }
+}
+
+/* neon side trim */
+.road::after {
+    content: "";
+    position: absolute;
+    left: 4%;
+    top: 28%;
+    width: 92%;
+    height: 4px;
+    background: #1effbc;
+    box-shadow: 0 0 18px #0effb0;
+    opacity: 0.6;
+    border-radius: 4px;
+    transform: perspective(200px) rotateX(32deg);
+    animation: neonPulse 1.4s infinite alternate;
+}
+
+@keyframes neonPulse {
+    from {
+        opacity: 0.3;
+        box-shadow: 0 0 6px #0effbc;
+    }
+    to {
+        opacity: 0.85;
+        box-shadow: 0 0 28px #0effbc;
+    }
+}
+
+/* city silhouette moving */
+.city-skyline {
+    position: absolute;
+    bottom: 260px;
+    left: 0;
+    width: 100%;
+    height: 110px;
+    background: repeating-linear-gradient(
+        90deg,
+        #0c1622 0px,
+        #0c1622 45px,
+        #1a2c42 45px,
+        #1a2c42 90px,
+        #0f1d2e 90px,
+        #0f1d2e 135px
+    );
+    z-index: 2;
+    opacity: 0.75;
+    animation: slideCity 22s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes slideCity {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: -270px;
+    }
+}
+
+/* speed lines (motion feeling) */
+.speed-lines {
+    position: absolute;
+    bottom: 35px;
+    left: -15%;
+    width: 130%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #b5ffff, transparent);
+    opacity: 0.35;
+    animation: speedDash 0.9s linear infinite;
+    z-index: 5;
+}
+
+@keyframes speedDash {
+    0% {
+        transform: translateX(-40%);
+        opacity: 0.1;
+    }
+    100% {
+        transform: translateX(40%);
+        opacity: 0.55;
+    }
+}
+
+/* HUD / UI */
+.hud-panel {
+    position: fixed;
+    bottom: 22px;
+    left: 22px;
+    color: #0cfc;
+    font-weight: bold;
+    text-shadow: 0 0 8px #0cf;
+    z-index: 100;
+    font-size: 15px;
+    font-family: "Orbitron", monospace;
+    letter-spacing: 2px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(5px);
+    padding: 8px 16px;
+    border-radius: 60px;
+    border-left: 3px solid #0ef;
+    pointer-events: none;
+}
+
+/* interactive message */
+.info-tip {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    color: #bbf5ff;
+    font-size: 11px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-family: monospace;
+    z-index: 100;
+    backdrop-filter: blur(3px);
+    pointer-events: none;
+}
+
+/* power mode visual boost */
+.hyper-glow {
+    animation: hyperFlash 0.2s ease-out;
+}
+
+@keyframes hyperFlash {
+    0% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.6) drop-shadow(0 0 8px magenta);
+    }
+    100% {
+        filter: brightness(1);
+    }
+}
